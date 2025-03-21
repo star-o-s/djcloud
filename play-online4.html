@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wave Personalizada</title>
+    <script src="https://unpkg.com/wavesurfer.js"></script>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: #808080; /* Fondo transparente */
+            color: white;
+            text-align: center;
+        }
+        #waveform {
+            width: 80%;
+            height: 100px;
+            position: relative;
+            background: transparent; /* Asegurar que el div no tenga fondo */
+			
+        }
+        button {
+            background: #1db954;
+            border: none;
+            padding: 12px 24px;
+            margin: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 50px;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #17a34a;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Reproductor con Onda Personalizada</h2>
+    <input type="file" id="audioFile" accept="audio/*">
+    <div id="waveform"></div>
+    <button id="playPause">Play</button>
+
+    <script>
+        let wavesurfer = WaveSurfer.create({
+            container: '#waveform',
+            waveColor: '#ffffff', // Borde blanco
+            progressColor: '#00aaff', // Progreso azul
+            barWidth: 5, // Grosor de barras
+            barGap: 2, // Espaciado entre barras
+            barRadius: 15, // Bordes redondeados
+            height: 100,
+            responsive: true,
+            interact: true,
+            backend: 'MediaElement',
+        });
+
+        document.getElementById('audioFile').addEventListener('change', function(event) {
+            let file = event.target.files[0];
+            if (file) {
+                let url = URL.createObjectURL(file);
+                wavesurfer.load(url);
+            }
+        });
+
+        document.getElementById('playPause').addEventListener('click', function() {
+            wavesurfer.playPause();
+            this.textContent = wavesurfer.isPlaying() ? 'Pausa' : 'Play';
+        });
+    </script>
+
+</body>
+</html>
